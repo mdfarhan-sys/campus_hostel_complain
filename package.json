@@ -1,0 +1,14 @@
+{
+  "name": "campus_hostel_complain",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "npm --prefix client run dev",
+    "client": "npm --prefix client run dev",
+    "server": "npm --prefix server run dev",
+    "build": "npm --prefix client run build",
+    "preview": "npm --prefix client run preview",
+    "install:all": "npm --prefix client install && npm --prefix server install",
+    "seed": "npm --prefix server run seed"
+  }
+}
