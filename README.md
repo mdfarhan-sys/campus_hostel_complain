@@ -1,137 +1,279 @@
-﻿# campus_hostel_complain
+# CampusFix — Hostel & Campus Complaint Management System
 
-> **A low-friction, crowd-powered campus infrastructure management platform.**  
-> Transform campus maintenance from slow, opaque admin queues into a real-time, transparent, photo-verified resolution engine using **QR code micro-interactions** and **dynamic upvoting**.
-
----
-
-## Complete UI Feature Breakdown & Interface Guide
-
-### 1. Student & Reporter Mobile Interface
-
-* **QR Scanner Overlay**
-  *  **Status Badge:** `Active Camera`
-  *  **Description:** Auto-detects tagged asset QR codes instantly without requiring manual entry of building, floor, or room names.
-
-*  **Pre-Filled Incident Form**
-  *  **Status Badge:** `Auto-Mapped Metadata`
-  *  **Description:** Pre-populates location data with **Asset ID**, **Building**, **Floor**, and **Room Number**.
-  *  **Media Upload:** Tap the **Camera Button** to attach a photo of the damaged asset.
-  *  **Instant Submission:** Tap the  **Submit Ticket** button to publish the complaint in under 15 seconds.
-
-*  **Existing Ticket Prompt ("Me Too" Notification)**
-  *  **Status Badge:** `Duplicate Prevention`
-  *  **Pop-up Modal:** Appears automatically if an issue is already registered for the scanned QR code.
-  *  **Upvote Action:** Features a prominent **"Upvote / Me Too"** button to elevate priority without creating duplicate tickets.
-
-*  **Campus Live Feed**
-  *  **Status Badge:** `Public Transparency`
-  *  **Priority Sorting:** Filters issues by  **High Priority**,  **Medium Priority**, or  **Low Priority**.
-  *  **Upvote Velocity:** Displays real-time vote metrics (e.g., ⬆ **42 Upvotes**).
-  *  **Progress Tracker:** Visual status bar (`Reported` ➔ `Assigned` ➔ `In Progress` ➔ `Pending Verification`).
-
-*  **Resolution & Proof Review Modal**
-  *  **Status Badge:** `Verification Gate`
-  *  **Side-by-Side Comparison:** Displays the original reported photo alongside the technician's **Photo Proof of Fix**.
-  *  **Approval Action:** Tapping **"Approve & Resolve"** marks the issue resolved and closes the ticket.
-  *  **Rejection Action:** Tapping **"Not Fixed"** reopens the ticket and escalates it directly to the department supervisor.
+> **“Report It. Track It. Fix It.”**  
+> A modern, student-driven SaaS platform engineered to eliminate bureaucratic friction and streamline facility complaint management in colleges and hostels.
 
 ---
 
-### 2.  Technician & Service Team Portal
-
-*  **Assigned Work Orders Queue**
-  *  **Red Priority Badge:** Highlights urgent tickets elevated by high campus upvote counts.
-  *  **Location Tag:** Displays pinpoint campus coordinates (e.g.,  **Library - 2nd Floor - Lab 3**).
-  *  **SLA Timer:** Live countdown clock displaying remaining time before an SLA breach occurs.
-
-*  **Active Repair Execution Screen**
-  *  **Start Work Action:** Blue **"Mark In Progress"** button updates the public live feed status in real time.
-  *  **Asset History Tab:** Provides access to historical maintenance logs and past component replacements for the asset.
-  *  **Escalation Button:** Direct button to request replacement parts or trigger supervisor intervention.
-
-*  **Proof-of-Work Submission Screen**
-  *  **Live Viewfinder:** Enforces a live photo capture of the completed repair.
-  *  **Technician Logs:** Input field for logging replaced parts, repair duration, and technical actions taken.
-  *  **Submission Action:** Green **"Upload Proof & Request Verification"** button to trigger student review.
+## Table of Contents
+- [Key Features](#key-features)
+- [Tech Stack](#tech-stack)
+- [Project Architecture](#project-architecture)
+- [Prerequisites](#prerequisites)
+- [Quick Start & Installation](#quick-start--installation)
+- [Environment Configuration](#environment-configuration)
+- [Running the Application](#running-the-application)
+- [Demo Accounts](#demo-accounts)
+- [API Documentation](#api-documentation)
+- [Complaint Lifecycle Workflow](#complaint-lifecycle-workflow)
+- [Seeding Test Data](#seeding-test-data)
+- [License](#license)
 
 ---
 
-### 3.  Department Admin Dashboard
+## Key Features
 
-* **Operations Control Center**
-  * **Green Metric Card:** Total tickets resolved today.
-  *  **Yellow Metric Card:** Pending technician assignments.
-  *  **Red Metric Card:** Active SLA alerts ($>24\text{ hours}$ unassigned or unresolved).
-
-*  **Campus Infrastructure Heatmap**
-  *  **Interactive Map:** Color-coded campus map identifying failure hotspots across university buildings.
-  *  **Analytics Graph:** Real-time charts displaying equipment breakdown frequencies by department and asset type.
-
-*  **Dispatch & Priority Override Console**
-  *  **Drag-and-Drop Kanban Board:** Move tickets across **IT**, **Electrical**, **Plumbing**, and **Civil** department queues.
-  *  **Priority Override:** Manually set critical safety hazards to top priority regardless of upvote count.
-
-*  **QR Code Batch Generator & Asset Registry**
-  *  **Batch Print Action:** Blue **"Export QR Sheet"** button generates printable QR sticker sheets for new assets.
-  *  **Asset Registration:** Simple web form to register new physical equipment into the central database.
+- **Responsive Modern UI**: Nature-inspired minimalist palette (deep forest green `#173D2B`, sage `#AFC69A`, cream `#F7F6EE`), rounded cards, and smooth micro-animations.
+- **Fast Ticket Submission**: Submit detailed hostel/campus complaints with category tagging, room location, urgency levels, and optional photo proofs.
+- **Real-Time Step-by-Step Tracker**: 5-stage live resolution timeline (`Reported` -> `Under Review` -> `Assigned` -> `In Progress` -> `Resolved`).
+- **Community Upvoting ("Me Too")**: Students can upvote active issues to automatically boost priority scores.
+- **Student Verification Loop**: Reporters can verify technician fixes (`Closed`) or dispute incomplete repairs (`Reopened`).
+- **Role-Based Access Control (RBAC)**: Dedicated permissions for Students, Technicians, Wardens, and Administrators.
+- **Resilient Database Layer**: Works with MongoDB (local or Atlas) and includes an automatic in-memory fallback for zero-friction local development.
 
 ---
 
-##  Core System Architecture & Features
+## Tech Stack
 
-### 1. Direct Asset Mapping (QR Code Tagging)
-* Every physical asset (projectors, desks, AC units, lab hardware) is tagged with a durable QR code tied to its database record.
-* Scanning the code extracts metadata automatically without requiring manual text entry.
+### Frontend (`client/`)
+- **Framework**: [React 18](https://react.dev/) + [Vite](https://vitejs.dev/)
+- **Routing**: [React Router DOM v6](https://reactrouter.com/)
+- **Styling**: [Tailwind CSS v3](https://tailwindcss.com/)
+- **Icons**: [Lucide React](https://lucide.dev/)
+- **Typography**: Plus Jakarta Sans & Inter
 
-### 2. Low-Friction Anonymous Reporting
-* Allows students and faculty to submit complaints immediately without mandatory login barriers.
-* Built-in detection automatically prompts users to upvote an existing report if the asset already has an active ticket.
-
-### 3. Campus Live Feed & Crowd-Sourced Priority Engine
-* All open, non-sensitive tickets are displayed on a public campus dashboard.
-* Dynamic scoring recalculates ticket rankings continuously based on upvote velocity and severity weighting:
-  $$\text{Priority Score} = (\text{Upvotes} \times 2) + \text{Severity Weight} - (\text{Hours Elapsed} \times 0.5)$$
-
-### 4. Smart Technician Dispatch & SLA Management
-* Automatically routes submitted tickets to relevant service units (IT, Electrical, Plumbing, Civil).
-* Automated escalation triggers notify administrators when tickets remain unassigned or unresolved beyond SLA thresholds ($>24\text{ hours}$).
-
-### 5. Proof-of-Work Verification Loop
-* Technicians must attach a live camera **photo proof of repair** before changing ticket status to *Pending Verification*.
-* Resolution notifications are pushed back to the reporter and upvoters for final sign-off and ticket closure.
+### Backend (`server/`)
+- **Runtime**: [Node.js](https://nodejs.org/) (ES Modules)
+- **Framework**: [Express.js](https://expressjs.com/)
+- **Database**: [MongoDB](https://www.mongodb.com/) with [Mongoose](https://mongoosejs.com/)
+- **Authentication**: JWT (JSON Web Tokens) + [bcryptjs](https://www.npmjs.com/package/bcryptjs)
+- **File Uploads**: [Multer](https://github.com/expressjs/multer)
+- **Logging**: Morgan
 
 ---
 
-##  Tech Stack Specification
+## Project Architecture
 
-| Layer | Technology | Function |
-| :--- | :--- | :--- |
-| **Frontend** | React / Next.js, Tailwind CSS | Responsive Progressive Web Application (PWA) with mobile camera scanning |
-| **Backend** | Node.js (Express / Fastify) or Python (FastAPI) | RESTful API, dynamic priority scoring, and notification webhooks |
-| **Database & Cache** | PostgreSQL + Redis | Relational data schema for assets & Redis for real-time live feed and upvote counters |
-| **Storage** | Cloudflare R2 / Amazon S3 | Cloud storage for uploaded photo proof and generated QR code assets |
-| **Notifications** | Web Push API / WhatsApp Webhooks | Real-time status update alerts sent to reporters and technicians |
+```
+campus_hostel_complain/
+├── client/                     # Frontend React + Vite application
+│   ├── public/
+│   ├── src/
+│   │   ├── components/         # Navbar, Footer, Button, StatCard, IssueCard, etc.
+│   │   ├── pages/              # Home, About, Issues, TrackIssue, ReportIssue, Contact, Login
+│   │   ├── services/           # Frontend API client (api.js)
+│   │   ├── data/               # Static categories and feature data
+│   │   ├── App.jsx             # Main routing layout
+│   │   ├── main.jsx            # React root mount
+│   │   └── index.css           # Tailwind base styles and design tokens
+│   ├── index.html
+│   ├── tailwind.config.js
+│   ├── vite.config.js          # Reverse proxy configuration (/api -> port 5000)
+│   └── package.json
+│
+├── server/                     # Backend Express REST API
+│   ├── config/
+│   │   └── db.js               # MongoDB connection + resilient local store fallback
+│   ├── controllers/            # Auth, Complaints, Stats, and Contact controllers
+│   ├── middleware/             # JWT Protect, Role Authorization, Multer Upload, Error Handlers
+│   ├── models/                 # User, Complaint, and Inquiry Mongoose schemas
+│   ├── routes/                 # Express API routes
+│   ├── seed/                   # Pre-seeded test accounts and seed script
+│   ├── utils/                  # Token generator & CF-2026-XXXXX ID generator
+│   ├── .env.example            # Environment template
+│   ├── package.json
+│   └── server.js               # Express application entrypoint
+│
+├── docs/                       # Specifications and user-flow.md
+├── design/                     # Design reference mockups
+├── package.json                # Root package runner scripts
+├── .gitignore                  # Fullstack gitignore rules
+└── README.md
+```
 
 ---
 
-##  Key Performance Indicators (KPIs)
+## Prerequisites
 
-* **Mean Time to Resolution (MTTR):** Target $\le 24\text{ hours}$ for high-priority tickets.
-* **Duplicate Ticket Reduction:** Target $\ge 90\%$ reduction via automatic upvote merging.
-* **Proof Verification Compliance:** $100\%$ mandatory photo proof required on all resolved tickets.
-* **First-Time Fix Rate (FTFR):** Target $\ge 85\%$ first-visit resolution rate.
-
----
-
-##  Documentation Index
-
-*  **[`idea-origin.md`](./idea-origin.md):** Background context, problem statement, and stakeholder benefits.
-* 🛠️ **[`solution.md`](./solution.md):** System architecture breakdown, UI specifications, and core feature pillars.
-*  **[`user-flow.md`](./user-flow.md):** Step-by-step user lifecycle diagrams, state machines, and edge-case handling.
+Before you begin, ensure you have the following installed:
+- [Node.js](https://nodejs.org/) (v18.0.0 or higher recommended)
+- [npm](https://www.npmjs.com/) (v9.0.0 or higher)
+- *(Optional)* [MongoDB Community Server](https://www.mongodb.com/try/download/community) or a free [MongoDB Atlas](https://www.mongodb.com/atlas) cluster URL.
 
 ---
 
-##  License
+## Quick Start & Installation
 
-This project is licensed under the MIT License — see the [LICENSE](./LICENSE) file for details.
+### 1. Clone the Repository
+```bash
+git clone https://github.com/Bhumieee/campus_hostel_complain.git
+cd campus_hostel_complain
+```
+
+### 2. Install All Dependencies
+You can install both client and server packages with one command from the project root:
+```bash
+npm run install:all
+```
+*Or install separately:*
+```bash
+cd client && npm install
+cd ../server && npm install
+cd ..
+```
+
+---
+
+## Environment Configuration
+
+Create a `.env` file inside the `server/` directory:
+
+```bash
+cp server/.env.example server/.env
+```
+
+Default configuration in `server/.env`:
+```env
+PORT=5000
+NODE_ENV=development
+
+# MongoDB Connection String (Local or MongoDB Atlas)
+MONGO_URI=mongodb://127.0.0.1:27017/campusfix
+
+# JWT Secret & Expiration
+JWT_SECRET=campusfix_jwt_secret_key_2026_super_secure_token
+JWT_EXPIRE=30d
+
+# Client URL (for CORS)
+CLIENT_URL=http://localhost:5173
+```
+
+> **Note on MongoDB:**  
+> If MongoDB is not running locally, CampusFix automatically operates in **Resilient Local Store mode**, allowing you to test all API endpoints, authentication, and ticket tracking without extra setup.
+
+---
+
+## Running the Application
+
+You can run both the frontend and backend simultaneously or independently.
+
+### Option A: From the Root Directory (Recommended)
+Open two terminal tabs:
+
+**Terminal 1 — Frontend Client:**
+```bash
+npm run dev
+# Vite runs at: http://localhost:5173
+```
+
+**Terminal 2 — Backend Server:**
+```bash
+npm run server
+# Express runs at: http://localhost:5000
+```
+
+---
+
+### Option B: Running from Individual Folders
+
+**Frontend:**
+```bash
+cd client
+npm run dev
+```
+
+**Backend:**
+```bash
+cd server
+npm start          # Production node execution
+# or
+npm run dev        # Hot-reloading with nodemon
+```
+
+---
+
+## Demo Accounts
+
+The system comes pre-seeded with test accounts ready to use on the `/login` page:
+
+| Role | University Email / ID | Password | Access Capabilities |
+| :--- | :--- | :--- | :--- |
+| **Student** | `aarav.sharma@campus.edu` / `2023CSB1042` | `studentPass2026` | Report issues, upvote, verify resolution |
+| **Hostel Warden** | `warden.satpura@campus.edu` / `FAC-WAR-09` | `wardenPass2026` | Review complaints, assign technicians, update milestones |
+| **Campus Technician** | `ramesh.plumber@campus.edu` | `techPass2026` | Advance status (`In Progress` -> `Resolved`), upload repair proofs |
+| **Dean / Admin** | `admin.affairs@campus.edu` | `wardenPass2026` | Full system audit and staff management |
+
+> *Tip: Use the **"Auto-Fill Student"** or **"Auto-Fill Warden"** buttons on the Login page for one-click testing without typing.*
+
+---
+
+## API Documentation
+
+Base URL: `http://localhost:5000/api`
+
+### Authentication (`/api/auth`)
+| Method | Endpoint | Access | Description |
+| :--- | :--- | :--- | :--- |
+| `POST` | `/api/auth/register` | Public | Register student or staff user |
+| `POST` | `/api/auth/login` | Public | Login with email/ID and password, returns JWT |
+| `GET` | `/api/auth/me` | Protected | Get authenticated profile |
+| `GET` | `/api/auth/staff` | Warden/Admin | Retrieve active technicians & wardens directory |
+
+### Complaints & Tracking (`/api/complaints`)
+| Method | Endpoint | Access | Description |
+| :--- | :--- | :--- | :--- |
+| `GET` | `/api/complaints` | Public | List complaints with category, status, and search filters |
+| `POST` | `/api/complaints` | Public / Auth | Submit complaint (auto-generates `CF-2026-XXXXX` code) |
+| `GET` | `/api/complaints/:id` | Public | Track ticket by complaint ID (e.g. `CF-2026-00124`) |
+| `PATCH`| `/api/complaints/:id/status`| Staff/Warden | Advance milestone (`Reported` -> `In Progress` -> `Resolved`) |
+| `POST` | `/api/complaints/:id/upvote`| Public | Community upvote ("Me Too") counter |
+| `POST` | `/api/complaints/:id/verify`| Student | Verification loop (`approve` fix or `reopen` ticket) |
+
+### Metrics & Contact (`/api/stats` & `/api/contact`)
+| Method | Endpoint | Access | Description |
+| :--- | :--- | :--- | :--- |
+| `GET` | `/api/stats` | Public | Campus resolution metrics and turnaround stats |
+| `POST` | `/api/contact` | Public | Submit helpdesk contact inquiries |
+| `GET` | `/api/health` | Public | System status health check |
+
+---
+
+## Complaint Lifecycle Workflow
+
+```
+[Student Reports Issue]
+         │
+         ▼
+[CF-2026-XXXXX Ticket Created] ──(Campus Transparency Board)
+         │
+         ▼
+  [Under Review] ◄─── Warden Verifies Priority & Building
+         │
+         ▼
+    [Assigned] ─────► Plumber / Electrician / Maintenance Cell
+         │
+         ▼
+   [In Progress] ───► Physical Repair Underway
+         │
+         ▼
+    [Resolved] ─────► Technician Completes Work
+         │
+         ▼
+ [Student Verification Loop]
+     ├── Approved ──► [Ticket Closed]
+     └── Disputed ──► [Reopened & Escalated]
+```
+
+---
+
+## Seeding Test Data
+
+If using MongoDB and you wish to reset or seed fresh test data:
+```bash
+npm run seed
+```
+
+---
+
+## License
+This project is open-source and available under the [ISC License](LICENSE).
